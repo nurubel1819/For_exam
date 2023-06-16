@@ -1,8 +1,8 @@
-1***************************************************************************
+1. Write a C program and run it in command prompt************************************
 nano / gedit a.cpp
 g++ -o a a.cpp
 ./a 
-2***********************************************************************
+2. Write a C program then create a makefile and run the program using that makefile*****************
 nano main.cpp 
 #include<bits/stdc++.h> 
 using namespace std;
@@ -17,7 +17,9 @@ nano b.cpp
 nano head.h -> void a(); void b();
 g++ main.cpp a.cpp b.cpp -o makefile
 ./makefile
-3.*******************************************************************
+3. Write a C or C++ program that accepts a filename as command line argument and prints the file’s
+contents on console. If the file does not exist, print some error on the screen.***********************************
+
 gedit input.txt
 gedit code.cpp
 g++ -o code code.cpp
@@ -37,7 +39,8 @@ int main(int c, char *arg[])
     return 0;
 }
 a ab abc abcd abcde
-4********************************************************************************
+4 Create a program that creates a child process. The child process prints “I am a child process” 100
+times in a loop. Whereas the parent process prints “I am a parent process” 100 times in a loop.******************************
 gedit code.cpp
 g++ -o code code.cpp
 ./code 
@@ -55,7 +58,10 @@ int main() {
     }
     return 0;
 }
-5.***************************************************************************
+5.Write a program which uses fork ()/CreateProcess system-call to create a child process. The child
+process prints the contents of the current directory and the parent process waits for the child
+process to terminate.***********************************************************************************************
+
 gedit code.cpp
 g++ -o code code.cpp
 ./code 
@@ -81,7 +87,9 @@ int main() {
     }
     return 0;
 }
-6.*******************************************************************************
+6.Calculate the waiting time, turn around time, average waiting time, and average turn
+around time using the SJF, FCFS, priority scheduling, and Round Robin CPU scheduling
+algorithms.************************************************************************************
 //fcfs
 #include <iostream>
 using namespace std;
