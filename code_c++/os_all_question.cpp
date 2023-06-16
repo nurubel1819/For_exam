@@ -1,8 +1,8 @@
-1.
+1***************************************************************************
 nano / gedit a.cpp
 g++ -o a a.cpp
 ./a 
-2.
+2***********************************************************************
 nano main.cpp 
 #include<bits/stdc++.h> 
 using namespace std;
@@ -17,7 +17,7 @@ nano b.cpp
 nano head.h -> void a(); void b();
 g++ main.cpp a.cpp b.cpp -o makefile
 ./makefile
-3.
+3.*******************************************************************
 gedit input.txt
 gedit code.cpp
 g++ -o code code.cpp
@@ -37,7 +37,7 @@ int main(int c, char *arg[])
     return 0;
 }
 a ab abc abcd abcde
-4.
+4********************************************************************************
 gedit code.cpp
 g++ -o code code.cpp
 ./code 
@@ -55,7 +55,7 @@ int main() {
     }
     return 0;
 }
-5.
+5.***************************************************************************
 gedit code.cpp
 g++ -o code code.cpp
 ./code 
@@ -81,7 +81,7 @@ int main() {
     }
     return 0;
 }
-6.
+6.*******************************************************************************
 //fcfs
 #include <iostream>
 using namespace std;
