@@ -1,0 +1,58 @@
+%{
+#include<bits/stdc++.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Structure to hold character frequency information
+struct CharFreq {
+    char character;
+    int frequency;
+};
+
+// Array to store character frequency information
+struct CharFreq charFreqArray[256];
+int charFreqCount = 0;
+
+// Function to check if a character already exists in the array
+int charExists(char character) {
+    for (int i = 0; i < charFreqCount; i++) {
+        if (charFreqArray[i].character == character) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Function to add a new character to the array
+void addChar(char character) {
+    int index = charExists(character);
+    if (index >= 0) {
+        charFreqArray[index].frequency++;
+    } else {
+        struct CharFreq newChar;
+        newChar.character = character;
+        newChar.frequency = 1;
+        charFreqArray[charFreqCount++] = newChar;
+    }
+}
+
+// Function to print the character frequencies
+void printCharFrequencies() {
+    for (int i = 0; i < charFreqCount; i++) {
+        printf("%c\t%d\n", charFreqArray[i].character, charFreqArray[i].frequency);
+    }
+}
+%}
+
+%option noyywrap
+
+%%
+.    { addChar(yytext[0]); }
+%%
+
+int main() {
+    yylex();
+    printCharFrequencies();
+    return 0;
+}

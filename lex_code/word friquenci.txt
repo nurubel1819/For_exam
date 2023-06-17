@@ -1,0 +1,68 @@
+%{
+#include<bits/stdc++.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Structure to hold word frequency information
+struct WordFreq {
+    char word[100];
+    int frequency;
+};
+
+// Array to store word frequency information
+struct WordFreq wordFreqArray[1000];
+int wordFreqCount = 0;
+
+// Function to check if a word already exists in the array
+int wordExists(char *word) {
+    for (int i = 0; i < wordFreqCount; i++) {
+        if (strcmp(wordFreqArray[i].word, word) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Function to add a new word to the array
+void addWord(char *word) {
+    int index = wordExists(word);
+    if (index >= 0) {
+        wordFreqArray[index].frequency++;
+    } else {
+        struct WordFreq newWord;
+        strcpy(newWord.word, word);
+        newWord.frequency = 1;
+        wordFreqArray[wordFreqCount++] = newWord;
+    }
+}
+
+// Function to print the word frequencies
+void printWordFrequencies() {
+    for (int i = 0; i < wordFreqCount; i++) {
+        printf("%s\t%d\n", wordFreqArray[i].word, wordFreqArray[i].frequency);
+    }
+}
+%}
+
+%option noyywrap
+
+%%
+[ \t\n\r]+    /* ignore whitespace */
+.              {
+                 char word[100];
+                 int i = 0;
+                 while (isalpha(yytext[i])) {
+                     word[i] = yytext[i];
+                     i++;
+                 }
+                 word[i] = '\0';
+                 addWord(word);
+               }
+%%
+
+int main() {
+    yylex();
+    printWordFrequencies();
+    return 0;
+}

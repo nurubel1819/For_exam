@@ -1,0 +1,254 @@
+#include<bits/stdc++.h>
+#define N 100
+using namespace std;
+
+int arrival_time[N];
+int completion_time[N];
+int burst_time[N];
+int priority[N];
+int n;
+void fcfs()
+{
+    vector<pair<int,pair<int,int>>>process;
+    for(int i=1;i<=n;i++)
+    {
+        process.push_back({arrival_time[i],{burst_time[i],i}});
+    }
+   sort(process.begin(),process.end());
+   int current_time=0;
+   for(auto it:process)
+   {
+       int arr=it.first;
+       int bur=it.second.first;
+       int p_id=it.second.second;
+
+       //cout<<p_id<<" "<<arr<<" "<<bur<<endl;
+
+       if(current_time<arr)current_time=arr;
+       current_time+=bur;
+       completion_time[p_id]=current_time;
+
+   }
+   cout<<"Process\tArrival Time\tCompletion Time\tBurst Time\tWaiting Time\tTurnaround Time\n";
+   int sum_of_waiting_time=0;
+   int sum_of_turnarround_time=0;
+   for(int i=1;i<=n;i++)
+   {
+       int waiting_time=(completion_time[i]-arrival_time[i])-burst_time[i];
+       int turn_arround_time=completion_time[i]-arrival_time[i];
+       sum_of_waiting_time+=waiting_time;
+       sum_of_turnarround_time+=turn_arround_time;
+
+       cout<<i<<"\t"<<arrival_time[i]<<"\t\t"<<completion_time[i]<<"\t\t"<<burst_time[i]<<"\t\t"<<waiting_time<<"\t\t"<<turn_arround_time<<endl;
+   }
+   cout<<"Average Waiting Time: "<<(float)sum_of_waiting_time/n<<endl;
+   cout<<"Average Waiting Time: "<<(float)sum_of_turnarround_time/n<<endl;
+
+}
+void sjf()
+{
+    vector<pair<int,pair<int,int>>>process;
+    for(int i=1;i<=n;i++)
+    {
+        process.push_back({burst_time[i],{arrival_time[i],i}});
+    }
+   sort(process.begin(),process.end());
+   int current_time=0;
+   for(auto it:process)
+   {
+       int bur=it.first;
+       int arr=it.second.first;
+       int p_id=it.second.second;
+
+       //cout<<p_id<<" "<<arr<<" "<<bur<<endl;
+
+       if(current_time<arr)current_time=arr;
+       current_time+=bur;
+       completion_time[p_id]=current_time;
+
+   }
+   cout<<"Process\tArrival Time\tCompletion Time\tBurst Time\tWaiting Time\tTurnaround Time\n";
+   int sum_of_waiting_time=0;
+   int sum_of_turnarround_time=0;
+   for(int i=1;i<=n;i++)
+   {
+       int waiting_time=(completion_time[i]-arrival_time[i])-burst_time[i];
+       int turn_arround_time=completion_time[i]-arrival_time[i];
+       sum_of_waiting_time+=waiting_time;
+       sum_of_turnarround_time+=turn_arround_time;
+
+       cout<<i<<"\t"<<arrival_time[i]<<"\t\t"<<completion_time[i]<<"\t\t"<<burst_time[i]<<"\t\t"<<waiting_time<<"\t\t"<<turn_arround_time<<endl;
+   }
+   cout<<"Average Waiting Time: "<<(float)sum_of_waiting_time/n<<endl;
+   cout<<"Average Waiting Time: "<<(float)sum_of_turnarround_time/n<<endl;
+}
+void ps()
+{
+   int time=1;
+   int current_time=0;
+   int remaining_time[n+1];
+   for(int i=1;i<=n;i++)
+   {
+       remaining_time[i]=burst_time[i];
+   }
+
+   vector<pair<int,pair<int,int>>>process;
+    for(int i=1;i<=n;i++)
+    {
+        process.push_back({arrival_time[i],{remaining_time[i],i}});
+    }
+   sort(process.begin(),process.end());
+   priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
+
+   int process_no=process[0].second.second;
+   q.push({priority[process_no],process_no});
+
+   int idx=1;
+   while(idx<n && process[idx].first==process[0].first)
+   {
+      process_no=process[idx].second.second;
+      q.push({priority[process_no],process_no});
+      idx++;
+   }
+
+   while(!q.empty())
+   {
+
+       int p=q.top().second;
+
+       //cout<<p<<" ";
+       q.pop();
+       if(current_time<arrival_time[p])current_time=arrival_time[p];
+
+       while(idx<n && process[idx].first<=current_time+time)
+       {
+           process_no=process[idx].second.second;
+           q.push({priority[process_no],process_no});
+           idx++;
+       }
+       if(remaining_time[p])remaining_time[p]--;
+       current_time++;
+
+       if(remaining_time[p]==0)
+       {
+           completion_time[p]=current_time;
+       }
+       if(remaining_time[p]>0)
+       {
+          q.push({priority[p],p});
+       }
+
+       //cout<<current_time<<endl;
+
+   }
+   cout<<"Process\tArrival Time\tCompletion Time\tBurst Time\tWaiting Time\tTurnaround Time\n";
+   int sum_of_waiting_time=0;
+   int sum_of_turnarround_time=0;
+   for(int i=1;i<=n;i++)
+   {
+       int waiting_time=(completion_time[i]-arrival_time[i])-burst_time[i];
+       int turn_arround_time=completion_time[i]-arrival_time[i];
+       sum_of_waiting_time+=waiting_time;
+       sum_of_turnarround_time+=turn_arround_time;
+
+       cout<<i<<"\t"<<arrival_time[i]<<"\t\t"<<completion_time[i]<<"\t\t"<<burst_time[i]<<"\t\t"<<waiting_time<<"\t\t"<<turn_arround_time<<endl;
+   }
+   cout<<"Average Waiting Time: "<<(float)sum_of_waiting_time/n<<endl;
+   cout<<"Average Waiting Time: "<<(float)sum_of_turnarround_time/n<<endl;
+}
+void rr()
+{
+   int time=3;
+   int current_time=0;
+   int remaining_time[n+1];
+   for(int i=1;i<=n;i++)
+   {
+       remaining_time[i]=burst_time[i];
+   }
+   vector<pair<int,pair<int,int>>>process;
+    for(int i=1;i<=n;i++)
+    {
+        process.push_back({arrival_time[i],{remaining_time[i],i}});
+    }
+   sort(process.begin(),process.end());
+   queue<int>q;
+   q.push(process[0].second.second);
+   int idx=0;
+   while(!q.empty())
+   {
+
+       int p=q.front();
+       //cout<<p<<" ";
+       q.pop();
+       if(current_time<arrival_time[p])current_time=arrival_time[p];
+       while(idx+1<n && process[idx+1].first<=current_time+time)
+       {
+           q.push(process[idx+1].second.second);
+           idx++;
+       }
+       if(remaining_time[p]>=time)
+       {
+           remaining_time[p]-=time;
+           current_time+=time;
+       }
+       else
+       {
+           current_time+=remaining_time[p];
+           remaining_time[p]=0;
+
+       }
+       if(remaining_time[p]==0)
+       {
+           completion_time[p]=current_time;
+       }
+       if(remaining_time[p]>0)
+       {
+          q.push(p);
+       }
+
+       cout<<current_time<<endl;
+
+   }
+   cout<<"Process\tArrival Time\tCompletion Time\tBurst Time\tWaiting Time\tTurnaround Time\n";
+   int sum_of_waiting_time=0;
+   int sum_of_turnarround_time=0;
+   for(int i=1;i<=n;i++)
+   {
+       int waiting_time=(completion_time[i]-arrival_time[i])-burst_time[i];
+       int turn_arround_time=completion_time[i]-arrival_time[i];
+       sum_of_waiting_time+=waiting_time;
+       sum_of_turnarround_time+=turn_arround_time;
+
+       cout<<i<<"\t"<<arrival_time[i]<<"\t\t"<<completion_time[i]<<"\t\t"<<burst_time[i]<<"\t\t"<<waiting_time<<"\t\t"<<turn_arround_time<<endl;
+   }
+   cout<<"Average Waiting Time: "<<(float)sum_of_waiting_time/n<<endl;
+   cout<<"Average Waiting Time: "<<(float)sum_of_turnarround_time/n<<endl;
+
+}
+
+int main(){
+
+    cout << "Enter the number of processes: ";
+    cin >> n;
+    cout << "Enter the arrival time and burst time of the processes"<<endl;
+    for(int i=1;i<=n;i++)
+    {
+       //cout<<"process no-"<<i<<": ";
+       int arr_time,bur_time;
+       cin>>arr_time>>bur_time;
+       arrival_time[i]=arr_time;
+       burst_time[i]=bur_time;
+       cin>>priority[i];
+
+
+    }
+
+    //fcfs();
+    //sjf();
+    //rr();
+    ps();
+
+
+
+    return 0;
+}

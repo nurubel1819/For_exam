@@ -1,0 +1,36 @@
+%{
+#include <iostream>
+#include <set>
+using namespace std;
+
+set<int> numbers;
+
+void printSortedNumbers() {
+    for (auto it = numbers.begin(); it != numbers.end(); it++) {
+        cout << *it << endl;
+    }
+}
+%}
+
+%%
+
+78[0-9]* {
+    numbers.insert(atoi(yytext)); // Add the matched number to the set
+}
+
+. {
+    // Ignore all other characters
+}
+
+%%
+
+
+int yywrap(){
+  return 1;
+}
+
+int main() {
+    yylex();
+    printSortedNumbers();
+    return 0;
+}
